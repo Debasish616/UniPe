@@ -1,13 +1,15 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+import uuid
+from sqlalchemy import Column, String, DateTime, Boolean
+from sqlalchemy.dialects.postgresql import UUID
 from app.utils.database import Base
 
 class OTPTransactionsDb(Base):
     __tablename__ = "otp_transactions"
-    id = Column(Integer, primary_key=True, index=True)
-    phone_number = Column(String, index=True)
-    code = Column(String)
-    created_at = Column(DateTime)
-    otp_expires_at = Column(DateTime)
-    transaction_expires_at = Column(DateTime)
-    is_otp_verified = Column(Boolean, default=False)
-    ip_address = Column(String)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    phone_number = Column(String, index=True, nullable=False)
+    code = Column(String, nullable=False)
+    created_at = Column(DateTime, nullable=False)
+    otp_expires_at = Column(DateTime, nullable=False)
+    transaction_expires_at = Column(DateTime, nullable=False)
+    is_otp_verified = Column(Boolean, default=False, nullable=False)
+    ip_address = Column(String, nullable=False)

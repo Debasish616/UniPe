@@ -1,42 +1,40 @@
 from pydantic import BaseModel
-from uuid import UUID
-from datetime import datetime
+from datetime import datetime, date
 
 class PhoneNumberRequest(BaseModel):
     phone_number: str
 
 class OTPVerifyRequest(BaseModel):
-    transaction_id: UUID
+    transaction_id: int
     otp: str
 
 class UserSignUpRequest(BaseModel):
-    transaction_id: UUID
+    transaction_id: int
     first_name: str
     last_name: str
-    phone_number: str
     password: str
-    dob: datetime
+    dob: date
     gender: str
 
 class UserSignUpResponse(BaseModel):
     detail: str
-    transaction_id: UUID
+    transaction_id: int
     otp_expires_at: datetime
 
 class CompleteSignUpResponse(BaseModel):
     detail: str
-    session: 'UserSession'
+    session: dict
 
 class UserSession(BaseModel):
-    id: UUID
+    session_id: str
+    user_id: int
     created_at: datetime
     expires_at: datetime
 
 class UserLoginResponse(BaseModel):
     detail: str
-    transaction_id: UUID
+    transaction_id: int
     otp_expires_at: datetime
 
 class CompleteLoginResponse(BaseModel):
-    detail: str
-    session: UserSession
+    session: dict

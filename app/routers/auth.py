@@ -1,3 +1,4 @@
+import uuid
 import secrets
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, status, Request, HTTPException
@@ -17,7 +18,6 @@ from app.utils.models import (
     UserLoginResponse,
     CompleteLoginResponse,
 )
-
 from app.utils import sessions as session_utils
 from app.config import settings
 from app.logging import logger
@@ -53,6 +53,7 @@ def request_otp(request: Request, phone_request: PhoneNumberRequest, db: Session
 
     # Save the OTP transaction
     db_otp_transaction = OTPTransactionsDb(
+        id=uuid.uuid4(),  # Generate UUID for transaction ID
         phone_number=phone_number,
         code=generated_otp,
         created_at=datetime.now(timezone.utc),
@@ -105,12 +106,12 @@ def verify_otp(request: Request, otp_request: OTPVerifyRequest, db: Session = De
     return JSONResponse(
         content=jsonable_encoder(
             UserSignUpResponse(
-                detail="OTP Verified Successfully",
+                detail="OTP Verified Successfully. User does not exist, proceed to signup.",
                 transaction_id=db_transaction.id,
                 otp_expires_at=db_transaction.otp_expires_at,
             )
         ),
-        status_code=status.HTTP_201_CREATED,
+        status_code=status.HTTP_201_CREATED,  # Use 201 Created to indicate signup is needed
     )
 
 @router.post("/complete-signup", response_model=CompleteSignUpResponse)
@@ -123,6 +124,7 @@ def complete_signup(request: Request, signup_request: UserSignUpRequest, db: Ses
     # Create a new user
     password_hash, salt = hash_password(signup_request.password)
     db_user = UserDb(
+        id=uuid.uuid4(),  # Generate UUID for user ID
         phone_number=db_transaction.phone_number,
         password_hash=password_hash,
         password_salt=salt,

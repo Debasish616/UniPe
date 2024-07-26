@@ -25,15 +25,7 @@ config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
-
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -55,7 +47,6 @@ def run_migrations_offline():
     with context.begin_transaction():
         context.run_migrations()
 
-
 def run_migrations_online():
     """Run migrations in 'online' mode.
     In this scenario we need to create an Engine
@@ -72,7 +63,6 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
-
 
 if context.is_offline_mode():
     run_migrations_offline()

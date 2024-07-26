@@ -14,4 +14,5 @@ class Settings(BaseSettings):
         extra = "ignore"  # Ignore extra fields
 
 settings = Settings()
-print(settings.dict())
+#print(settings.dict())
+print(settings.model_dump())
