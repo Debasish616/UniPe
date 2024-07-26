@@ -40,3 +40,7 @@ class UserLoginResponse(BaseModel):
 class CompleteLoginResponse(BaseModel):
     detail: str
     session: UserSession
+
+class WalletResponse(BaseModel):
+    usdc_balance: float
+    usd_equivalent: float
