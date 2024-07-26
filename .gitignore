@@ -117,3 +117,16 @@ venv.bak/
 
 # VS Code
 .vscode/
+
+
+# Virtual environment
+venv/
+.virtualenv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.*
